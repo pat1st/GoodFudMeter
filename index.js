@@ -7,13 +7,16 @@ const languageClient = new LanguageServiceClient();
 const { convert } = require('html-to-text');
 
 /*
-
 how to use:
 - install dependencies
+    npm i axios cheerio gnews @google-cloud/language html-to-text
 - add the correct crendentials in creds.json
-- use the following command: node index.js
+    see Readme.md
+- use the following command: 
+    node index.js
 
-/*
+
+    
  to be created in another file called creds.json at the root of this file.
 {
   "type": "service_account",
