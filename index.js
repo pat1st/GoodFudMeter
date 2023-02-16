@@ -86,3 +86,5 @@ async function analyzeSentiment(content) {
 
   return result.documentSentiment.score;
 }
+
+launchAlgo().then(console.log).catch(console.error);
