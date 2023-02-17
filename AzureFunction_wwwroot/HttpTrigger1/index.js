@@ -13,28 +13,7 @@ const {
 /*
 how to use:
 - install dependencies
-    npm i axios cheerio gnews @google-cloud/language html-to-text
-- add the correct crendentials in creds.json
-    see Readme.md
-- use the following command: 
-    node index.js
-
-
-
- to be created in another file called creds.json at the root of this file.
-{
-  "type": "service_account",
-  "project_id": "xx",
-  "private_key_id": "xx",
-  "private_key": "xx",
-  "client_email": "xx",
-  "client_id": "xx",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "xx",
-}
-
+    npm i path gnews @google-cloud/language html-to-text
 */
 
 process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(__dirname, 'creds.json');
@@ -79,17 +58,6 @@ async function launchAlgo() {
     };
 }
 
-// async function readPageContent(link) {
-//   const response = await axios.get(link);
-//   const googleNewsPageContent = cheerio.load(response.data)
-//   const { data } = await axios.get(googleNewsPageContent('c-wiz a[rel=nofollow]').attr('href'));
-//
-//   const realPageContent = cheerio.load(data)
-//   return convert(realPageContent('body').html(), { wordwrap: null });
-//
-//   //@todo read the correct section for each website
-//   // each website has an unique structure
-// }
 
 async function analyzeSentiment(content) {
     const [result] = await languageClient.analyzeSentiment({
