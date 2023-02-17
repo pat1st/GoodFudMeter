@@ -1,5 +1,5 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+// const axios = require('axios');
+// const cheerio = require('cheerio');
 const path = require('path');
 const news = require('gnews');
 const { LanguageServiceClient } = require('@google-cloud/language');
@@ -16,7 +16,7 @@ how to use:
     node index.js
 
 
-    
+
  to be created in another file called creds.json at the root of this file.
 {
   "type": "service_account",
@@ -63,7 +63,7 @@ async function launchAlgo() {
 
   return {
     details,
-    result: `FUD METER => ${badCount}:${goodCount}`,
+    result: `FUD METER => b:g  ${badCount}:${goodCount}`,
   };
 }
 
