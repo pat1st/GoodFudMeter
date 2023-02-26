@@ -12,9 +12,15 @@ import azure.cosmos.documents as documents
 import azure.cosmos.cosmos_client as cosmos_client
 import azure.cosmos.exceptions as exceptions
 from azure.cosmos.partition_key import PartitionKey
-#import datetime
+# import datetime
 
-import config
+import config  # make sure to create a config.py file with the settings you got for Azure Cosmos DB
+
+####################
+default_language = "en"
+default_results = 11
+default_topic = "tesla news"
+####################
 
 now = datetime.now()
 
@@ -56,7 +62,7 @@ def sample_analyze_sentiment(content, language="en"):
 def getFudMeterEntry(language, topic, good, bad, newsitems):
 
     entry = {
-        'id': str(now.strftime("%Y%m%d%H%M%S")) + language + topic,
+        'id': str(now.strftime("%Y%m%d%H%M%S")) + "--" + language + "--" + topic.replace(" ", "-"),
         'timestamp': now.strftime("%Y-%m-%d %H:%M:%S"),
         'language': language,
         'topic': topic,
@@ -106,17 +112,16 @@ def getJSON(language, results, topic):
 if __name__ == "__main__":
 
     specs = []
-    spec = {"language": "en", "results": 11, "topic": "tesla news"}
+    spec = {"language": "en", "results": default_results, "topic": default_topic}
     specs.append(spec)
-    spec = {"language": "de", "results": 11, "topic": "tesla news"}
+    spec = {"language": "de", "results": default_results, "topic": default_topic}
     specs.append(spec)
-    spec = {"language": "fr", "results": 11, "topic": "tesla news"}
+    spec = {"language": "fr", "results": default_results, "topic": default_topic}
     specs.append(spec)
-    spec = {"language": "es", "results": 11, "topic": "tesla news"}
+    spec = {"language": "es", "results": default_results, "topic": default_topic}
     specs.append(spec)
 
     for spec in specs:
         result = getJSON(spec["language"], spec["results"], spec["topic"])
         print(result)
         container.create_item(body=result)
-        
