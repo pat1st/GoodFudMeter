@@ -4,6 +4,9 @@
 from google.cloud import language_v1
 import os
 from gnews import GNews
+from datetime import datetime
+
+now = datetime.now()
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = ".\creds.json"
 
@@ -22,11 +25,21 @@ def sample_analyze_sentiment(content, language="en"):
 
     response = client.analyze_sentiment(request={"document": document})
     sentiment = response.document_sentiment
-    # print("Score: {}".format(sentiment.score))
-    # print("Magnitude: {}".format(sentiment.magnitude))
     mySentiment = sentiment.score * (1+sentiment.magnitude)
-    # print("Sentiment: {}".format(mySentiment))
     return mySentiment
+
+
+def getFudMeterEntry(language, topic, good, bad, newsitems):
+        
+    entry = {
+        'timestamp': now.strftime("%Y-%m-%d %H:%M:%S"),
+        'language': language,
+        'topic': topic,
+        'good': good,
+        'bad': bad,
+        'news': newsitems
+    }
+    return entry
 
 
 if __name__ == "__main__":
@@ -34,24 +47,41 @@ if __name__ == "__main__":
     language = "en"
     results = 5
     topic = "tesla news"
-    
 
     good = 0
     bad = 0
     news = get_news(language=language, topic=topic, results=results)
+    sentimentText = "neutral"
+
+    newsitems = []
 
     for newsitem in news:
         cutPos = newsitem['title'].rfind('-')
         mySentimentText = newsitem['title'][0:cutPos] + \
             " " + newsitem['description']
-        print(mySentimentText)
+        # print(mySentimentText)
         mySentiment = sample_analyze_sentiment(mySentimentText, language)
-        print(mySentiment)
+        # print(mySentiment)
         if mySentiment >= 0:
             good += 1
+            sentimentText = "good"
         else:
             bad += 1
-    print('-----------------')
-    print('Good: ' + str(good))
-    print('Bad: ' + str(bad))
-    
+            sentimentText = "bad"
+
+        newsitems.append({
+            'title': newsitem['title'],
+            'url': newsitem['url'],
+            'published date': newsitem['published date'],
+            'description': newsitem['description'],
+            'publisher': newsitem['publisher'],
+            'sentiment': mySentiment,
+            'sentimentText': sentimentText
+        })
+
+    result = getFudMeterEntry(language, topic, good, bad, newsitems)
+    print(result)
+
+    # print('-----------------')
+    # print('Good: ' + str(good))
+    # print('Bad: ' + str(bad))
