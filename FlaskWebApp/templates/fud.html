@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2687895404343958"
+		crossorigin="anonymous"></script>
+	<meta charset="UTF-8">
+	<title>FudParade - Tesla News</title>
+	<style>
+		p {
+			font-family: arial, sans-serif;
+			font-size: 20px;
+			font-weight: bold;
+			color: #000000;
+		}
+		h1 {
+			font-family: arial, sans-serif;
+			font-size: 30px;
+			font-weight: bold;
+			color: #361193;
+		}
+		table {
+			font-family: arial, sans-serif;
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		td,
+		th {
+			border: 1px solid #dddddd;
+			text-align: left;
+			padding: 8px;
+		}
+
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Tesla News FudQuotient</h1>
+<p>This service looks up the top 'Tesla' News articles in Google News and uses Google AI to see if the article's title is sentimented as good or bad. Then sums it up and lists it.</p>
+	<table>
+		<tr>
+			{% for col in titles %}
+			<th>{{col}}</th>
+			{% endfor %}
+		</tr>
+		{% for row in row_data %}
+		<tr>
+			{% for col, row_ in zip(titles, row) %}
+			{% if col == link_column %}
+			<td>
+				<a href=showNewsDetails?id={{row_}} >
+					NewsDetails
+				</a>
+			</td>
+			{% else %}
+			<td>{{row_}}</td>
+			{% endif %}
+			{% endfor %}
+		</tr>
+		{% endfor %}
+
+	</table>
+	<p></p>
+	<p><a href="https://twitter.com/TeslaAlgo/status/1626295535538786309" target="_blank">idea</a> by: T Ξ S L Λ Algo <a
+			href="https://twitter.com/TeslaAlgo" target="_blank">@TeslaAlgo</a></p>
+	<p>prototype by: Tesla bull <a href="https://twitter.com/financialworldx" target="_blank">@financialworldx</a></p>
+	<p>implemented by: Patrick 🔆⚡🔋🚗 <a href="https://twitter.com/pat1st" target="_blank">@pat1st</a></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p>enjoy</p>
+</body>
+
+</html>
