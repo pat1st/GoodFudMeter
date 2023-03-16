@@ -2,84 +2,126 @@
 <html lang="en">
 
 <head>
+	<link rel="stylesheet" href="{{url_for('.static', filename='fudstyle.css')}}">
 	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2687895404343958"
 		crossorigin="anonymous"></script>
-	<meta charset="UTF-8">
-	<title>FudParade - Tesla News</title>
-	<style>
-		p {
-			font-family: arial, sans-serif;
-			font-size: 20px;
-			font-weight: bold;
-			color: #000000;
-		}
-		h1 {
-			font-family: arial, sans-serif;
-			font-size: 30px;
-			font-weight: bold;
-			color: #361193;
-		}
-		table {
-			font-family: arial, sans-serif;
-			border-collapse: collapse;
-			width: 100%;
-		}
-
-		td,
-		th {
-			border: 1px solid #dddddd;
-			text-align: left;
-			padding: 8px;
-		}
-
-		tr:nth-child(even) {
-			background-color: #dddddd;
-		}
-	</style>
+	
+	<title>Fud-Parade - Tesla News</title>
+	<meta http-equiv="content-Type" content="text/html; utf-8" />
+	<meta name="robots" content="INDEX,FOLLOW" />
+	<meta http-equiv="content-Language" content="en" />
+	<meta name="description" content="Tesla news Fud analysis" />
+	<meta name="keywords" content="Tesla $TSLA TSLA analysis" />
+	<meta name="author" content="@pat1st" />
+	<meta name="revisit-after" content="2 days" />
 </head>
 
 <body>
 	<h1>Tesla News FudQuotient</h1>
-<p>This service looks up the top 'Tesla' News articles in Google News and uses Google AI to see if the article's title is sentimented as good or bad. Then sums it up and lists it.</p>
+
+	<p>This service uses AI (Artificial Intelligence) to determine the actual MSM (Main-Stream-Media) FUD (Fear,
+		Uncertaincy, Doubt) level for <a href="https://www.tesla.com/" target="_blank">TESLA</a>.</p>
+	<p>Tesla does not have a PR department and does not advertise, but still is very successful, due to the great
+		products and their strategy to implement their mission, to "accelerate the world's transition to sustainable
+		energy". It is widely known that a lot of FUD is spread via MSM to undermine Tesla and also manipulate the <a
+			href="https://www.google.com/finance/quote/TSLA:NASDAQ" target="_blank">$TSLA</a> Stock price. </p>
+	<p>We look up the top 'Tesla' News articles in Google News and use Google AI to see if the article's
+		title is sentimented as good or bad. Then we sums it up and list it for your reference.</p>
+	<p>Today we offer this service in 5 languages: English, German, French, Spanish and Chinese, with Chinese being in test mode for now. Please get in touch (via
+		Twitter, see below) if you want languages added or have other ideas, how this could be improved.</p>
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2687895404343958"
+		crossorigin="anonymous"></script>
+	<!-- FudParaDe default -->
+	<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2687895404343958" data-ad-slot="8206377592"
+		data-ad-format="auto" data-full-width-responsive="true"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
 	<table>
 		<tr>
-			{% for col in titles %}
-			<th>{{col}}</th>
-			{% endfor %}
-		</tr>
-		{% for row in row_data %}
-		<tr>
-			{% for col, row_ in zip(titles, row) %}
-			{% if col == link_column %}
 			<td>
-				<a href=showNewsDetails?id={{row_}} >
-					NewsDetails
-				</a>
-			</td>
-			{% else %}
-			<td>{{row_}}</td>
-			{% endif %}
-			{% endfor %}
-		</tr>
-		{% endfor %}
+				<table>
+					<tr>
+						{% for col in titles %}
+						<th>{{col}}</th>
+						{% endfor %}
+					</tr>
+					{% for row in row_data %}
+					<tr>
+						{% for col, row_ in zip(titles, row) %}
+						{% if col == link_column %}
+						<td>
+							<a href=showNewsDetails?id={{row_}}>
+								NewsDetails
+							</a>
+						</td>
+						{% else %}
+						<td>{{row_}}</td>
+						{% endif %}
+						{% endfor %}
+					</tr>
+					{% endfor %}
 
+				</table>
+			</td>
+			<td>
+				<script async
+					src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2687895404343958"
+					crossorigin="anonymous"></script>
+				<!-- verticalFUD -->
+				<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2687895404343958"
+					data-ad-slot="7022423907" data-ad-format="auto" data-full-width-responsive="true"></ins>
+				<script>
+					(adsbygoogle = window.adsbygoogle || []).push({});
+				</script>
+			</td>
+		</tr>
 	</table>
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2687895404343958"
+		crossorigin="anonymous"></script>
+	<!-- FudParaDe default -->
+	<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2687895404343958" data-ad-slot="8206377592"
+		data-ad-format="auto" data-full-width-responsive="true"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
 	<p></p>
 	<p><a href="https://twitter.com/TeslaAlgo/status/1626295535538786309" target="_blank">idea</a> by: T Ξ S L Λ Algo <a
 			href="https://twitter.com/TeslaAlgo" target="_blank">@TeslaAlgo</a></p>
 	<p>prototype by: Tesla bull <a href="https://twitter.com/financialworldx" target="_blank">@financialworldx</a></p>
 	<p>implemented by: Patrick 🔆⚡🔋🚗 <a href="https://twitter.com/pat1st" target="_blank">@pat1st</a></p>
+	<p>Please get in touch via Twitter and let us know your thougts and additional requirements<br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br>
+		<script async
+			src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2687895404343958"
+			crossorigin="anonymous"></script>
+		<!-- FudParaDe default -->
+		<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2687895404343958"
+			data-ad-slot="8206377592" data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+	</p>
 	<p><br></p>
 	<p><br></p>
 	<p><br></p>
 	<p><br></p>
+	<p><br>
+		<script async
+			src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2687895404343958"
+			crossorigin="anonymous"></script>
+		<!-- FudParaDe default -->
+		<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2687895404343958"
+			data-ad-slot="8206377592" data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+	</p>
 	<p><br></p>
-	<p><br></p>
-	<p><br></p>
-	<p><br></p>
-	<p><br></p>
-	<p><br></p>
-	<p>enjoy</p>
+	<p></p>
+	<p>our <a href="privacy.html" target="_blank">privacy policy</a></p>
 </body>
 
 </html>

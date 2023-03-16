@@ -1,0 +1,36 @@
+p {
+	font-family: arial, sans-serif;
+	font-size: 18px;
+	color: #000000;
+}
+
+a {
+	font-family: arial, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	color: #650436;
+}
+
+h1 {
+	font-family: arial, sans-serif;
+	font-size: 30px;
+	font-weight: bold;
+	color: #361193;
+}
+
+table {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+td,
+th {
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
+
+tr:nth-child(even) {
+	background-color: #dddddd;
+}

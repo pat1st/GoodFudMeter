@@ -120,6 +120,21 @@ def query_newsdetails(container, myId):
     return items
 
 
+@app.route('/privacy.html', methods=("POST", "GET"))
+def privacy():
+    return render_template('privacy.html')
+
+
+@app.route('/cookies.html', methods=("POST", "GET"))
+def cookies():
+    return render_template('cookies.html')
+
+
+@app.route('/ads.txt', methods=("POST", "GET"))
+def ads():
+    return "google.com, pub-2687895404343958, DIRECT, f08c47fec0942fa0"
+
+
 @app.route('/', methods=("POST", "GET"))
 def html_table():
     x = query_items(container)
@@ -140,11 +155,16 @@ def fudnews():
         newf = pd.DataFrame()
         for i in range(len(df)):
             newf = newf.append(df[i], ignore_index=True)
-        
+
         return render_template('fudNewsDetails.html', titles=newf.columns.values, row_data=list(newf.values.tolist()), link_column="url", myId=id, zip=zip)
     else:
         print('Request for fudnews details page received with no id -- redirecting')
         return redirect(url_for('html_table'))
+
+
+@app.route('/favicon.ico', methods=("POST", "GET"))
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/sentiment', methods=("POST", "GET"))
@@ -152,6 +172,8 @@ def sentiment():
     now = datetime.now()
 
     specs = []
+    spec = {"language": "zh", "results": default_results, "topic": "特斯拉"}
+    specs.append(spec)
     spec = {"language": "en", "results": default_results, "topic": default_topic}
     specs.append(spec)
     spec = {"language": "de", "results": default_results, "topic": default_topic}
@@ -165,17 +187,17 @@ def sentiment():
     res = ""
 
     for spec in specs:
-        res = res + "\nProcessing " + spec["language"] 
+        res = res + "\nProcessing " + spec["language"]
         try:
-            #print("Processing", spec["language"], spec["results"], spec["topic"])
+            # print("Processing", spec["language"], spec["results"], spec["topic"])
             result = getJSON(spec["language"], spec["results"], spec["topic"])
-            #print(result)
+            # print(result)
             container.create_item(body=result, indexing_directive="include")
         except Exception as e:
             res = res + "\n" + str(result) + "\n## ERROR ##" + str(e)
-    return('Done!  \n' + res)
+    return ('Done!  \n' + res)
 
 
 if __name__ == '__main__':
-    
+
     app.run()
