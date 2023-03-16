@@ -106,12 +106,16 @@ def getJSON(language, results, topic):
     return result
 
 
-def query_items(container):
-    items = list(container.query_items(
-        query="SELECT top 192 c.timestamp, c.language, c.good, c.bad, c.id FROM c order by c.timestamp desc", enable_cross_partition_query=True
-    ))
+def query_items(container, language = ''):
+    if language == '':
+        items = list(container.query_items(
+            query="SELECT top 24 c.timestamp, c.language, c.good, c.bad, c.id FROM c order by c.timestamp desc", enable_cross_partition_query=True
+        ))
+    else:
+        items = list(container.query_items(
+            query="SELECT top 24 c.timestamp, c.language, c.good, c.bad, c.id FROM c where c.language = '" + language + "' order by c.timestamp desc", enable_cross_partition_query=True
+        ))
     return items
-
 
 def query_newsdetails(container, myId):
     items = list(container.query_items(
@@ -137,16 +141,27 @@ def ads():
 
 @app.route('/', methods=("POST", "GET"))
 def html_table():
-    x = query_items(container)
+    language = request.args.get('language')
+    if language:
+        x = query_items(container, language)
+    else:
+        x = query_items(container, 'en')
+
     df = pd.DataFrame(x)
-    df['FudQ'] = df['good'] / df['bad']
+    df['FudQ'] = (df['good'] + df['bad']) / (df['good'] / df['bad'])
+    df['FudQ'] = df['FudQ'].round(1)
+    df['FudQ'] = df['FudQ'].astype(str)
+    df['FudQ'] = df['FudQ'].str.replace('inf', '∞')
+    df['FudQ'] = df['FudQ'].str.replace('nan', '∞')
+    
+
     return render_template('fud.html', titles=df.columns.values, row_data=list(df.values.tolist()), link_column="id", zip=zip)
 
 
 @app.route('/showNewsDetails', methods=("POST", "GET"))
 def fudnews():
     id = request.args.get('id')
-    print("##############" + str(id))
+    #print("##############" + str(id))
 
     if id:
         print('Request for fudnews details page received with id=%s' % id)
