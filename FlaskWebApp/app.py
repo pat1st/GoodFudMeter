@@ -143,10 +143,23 @@ def ads():
 @app.route('/', methods=("POST", "GET"))
 def html_table():
     language = request.args.get('language')
-    if language:
-        x = query_items(container, language)
-    else:
-        x = query_items(container, 'en')
+    if not language:
+        language = 'en'
+    x = query_items(container, language)
+
+    languageMap = {
+        'en': 'English',
+        'de': 'German',
+        'fr': 'French',
+        'es': 'Spanish',
+        # 'it': 'Italian',
+        # 'nl': 'Dutch',
+        # 'pt': 'Portuguese',
+        # 'ru': 'Russian',
+        # 'ja': 'Japanese',
+        'zh': 'Chinese'
+    }
+    languageLong = languageMap.get(language)
 
     df = pd.DataFrame(x)
 
@@ -154,13 +167,22 @@ def html_table():
     df['FudQ'] = ((df['bad']+df['good'])/4) * df['bad']
 
     fudqavg = df['FudQ'].mean().round(1)
+    #fudavg as degree 
+    fudavgdeg = (fudqavg/100)*180
+    
+    fudavgcolor = '#00FF00'
+    if fudavgdeg > 120:
+        fudavgcolor = '#FF0000'
+    elif fudavgdeg > 45:
+        fudavgcolor = '#FFFF00'
+    
 
     df['FudQ'] = df['FudQ'].round(1)
     df['FudQ'] = df['FudQ'].astype(str)
     df['FudQ'] = df['FudQ'].str.replace('inf', '∞')
     df['FudQ'] = df['FudQ'].str.replace('nan', '∞')
 
-    return render_template('fud.html', titles=df.columns.values, row_data=list(df.values.tolist()), link_column="id", zip=zip, fudQAverage=fudqavg)
+    return render_template('fud.html', titles=df.columns.values, row_data=list(df.values.tolist()), link_column="id", zip=zip, fudQAverage=fudqavg, langlong=languageLong, fudAverageDeg=fudavgdeg, fudColor=fudavgcolor)
 
 
 @app.route('/showNewsDetails', methods=("POST", "GET"))

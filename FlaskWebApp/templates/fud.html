@@ -4,7 +4,7 @@
 <head>
 	<link rel="stylesheet" href="{{url_for('.static', filename='fudstyle.css')}}">
 
-	<title>Fud-Parade - Tesla News</title>
+	<title>{{ fudQAverage }} - {{ langlong }} - Fud-Parade - Tesla News</title>
 	<meta http-equiv="content-Type" content="text/html; utf-8" />
 	<meta name="robots" content="INDEX,FOLLOW" />
 	<meta http-equiv="content-Language" content="en" />
@@ -15,7 +15,18 @@
 </head>
 
 <body>
-	<h1>Tesla News FudQuotient</h1>
+	<h1>{{ langlong }} 48hr FudQ average: {{ fudQAverage }}</h1>
+	<p>max: 100 (i.e. very bad)</p>
+	<p>
+		<div class="gauge"
+			style="width: 250px; --rotation:{{ fudAverageDeg }}deg; --color:{{ fudColor }}; --background:#888;">
+			<div class="percentage"></div>
+			<div class="mask"></div>
+			<span class="value">{{ fudQAverage }}</span>
+		</div>
+	</p>
+
+	<h1>Welcome to Tesla News FudQuotient</h1>
 
 	<p>This service uses AI (Artificial Intelligence) to determine the actual MSM (Main-Stream-Media) FUD (Fear,
 		Uncertaincy, Doubt) level for <a href="https://www.tesla.com/" target="_blank">TESLA</a>.</p>
@@ -31,8 +42,7 @@
 		with Chinese being in
 		test mode for now. Please get in touch (via Twitter, see below) if you want languages added or have other ideas,
 		how this could be improved..</p>
-	<h1>48hr FudQ average: {{ fudQAverage }}</h1>
-	<p>max: 100 (i.e. very bad)</p>
+
 	<table>
 		<tr>
 			<td>
@@ -61,11 +71,11 @@
 				</table>
 			</td>
 			<td>
-				
+
 			</td>
 		</tr>
 	</table>
-	
+
 	<p></p>
 	<p><a href="https://twitter.com/TeslaAlgo/status/1626295535538786309" target="_blank">idea</a> by: T Ξ S L Λ Algo <a
 			href="https://twitter.com/TeslaAlgo" target="_blank">@TeslaAlgo</a></p>
@@ -75,17 +85,19 @@
 	<p><br></p>
 	<p><br></p>
 	<p><br>
-		
-	</p><p>
-	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2687895404343958"
-		crossorigin="anonymous"></script>
-	<!-- FudParaDe default -->
-	<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2687895404343958" data-ad-slot="8206377592"
-		data-ad-format="auto" data-full-width-responsive="true"></ins>
-	<script>
-		(adsbygoogle = window.adsbygoogle || []).push({});
-	</script>
-		
+
+	</p>
+	<p>
+		<script async
+			src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2687895404343958"
+			crossorigin="anonymous"></script>
+		<!-- FudParaDe default -->
+		<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2687895404343958"
+			data-ad-slot="8206377592" data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+
 	</p>
 	<p><br></p>
 	<p></p>
