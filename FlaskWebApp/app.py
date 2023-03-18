@@ -106,7 +106,7 @@ def getJSON(language, results, topic):
     return result
 
 
-def query_items(container, language = ''):
+def query_items(container, language=''):
     if language == '':
         items = list(container.query_items(
             query="SELECT top 24 c.timestamp, c.language, c.good, c.bad, c.id FROM c order by c.timestamp desc", enable_cross_partition_query=True
@@ -116,6 +116,7 @@ def query_items(container, language = ''):
             query="SELECT top 24 c.timestamp, c.language, c.good, c.bad, c.id FROM c where c.language = '" + language + "' order by c.timestamp desc", enable_cross_partition_query=True
         ))
     return items
+
 
 def query_newsdetails(container, myId):
     items = list(container.query_items(
@@ -148,33 +149,47 @@ def html_table():
         x = query_items(container, 'en')
 
     df = pd.DataFrame(x)
-    df['FudQ'] = (df['good'] + df['bad']) / (df['good'] / df['bad'])
+
+    # calculate FudQ
+    df['FudQ'] = ((df['bad']+df['good'])/4) * df['bad']
+
+    fudqavg = df['FudQ'].mean().round(1)
+
     df['FudQ'] = df['FudQ'].round(1)
     df['FudQ'] = df['FudQ'].astype(str)
     df['FudQ'] = df['FudQ'].str.replace('inf', '∞')
     df['FudQ'] = df['FudQ'].str.replace('nan', '∞')
-    
 
-    return render_template('fud.html', titles=df.columns.values, row_data=list(df.values.tolist()), link_column="id", zip=zip)
+    return render_template('fud.html', titles=df.columns.values, row_data=list(df.values.tolist()), link_column="id", zip=zip, fudQAverage=fudqavg)
 
 
 @app.route('/showNewsDetails', methods=("POST", "GET"))
 def fudnews():
     id = request.args.get('id')
-    #print("##############" + str(id))
+    # print("##############" + str(id))
 
     if id:
         print('Request for fudnews details page received with id=%s' % id)
         x = query_newsdetails(container, id)
         df = pd.DataFrame(x)['news']
+
         newf = pd.DataFrame()
         for i in range(len(df)):
             newf = newf.append(df[i], ignore_index=True)
 
-        return render_template('fudNewsDetails.html', titles=newf.columns.values, row_data=list(newf.values.tolist()), link_column="url", myId=id, zip=zip)
+        newf = newf.drop(['sentiment', 'publisher', 'description'], axis=1)
+        newf['sentimentText'] = newf['sentimentText'].str.replace('good', '👍 good')
+        newf['sentimentText'] = newf['sentimentText'].str.replace('bad', '👎 bad')
+
+        # bring df in new order
+        newf = newf[['sentimentText', 'url', 'title']]
+
+        colTitles = ['Sentiment', 'Link', 'Title']
+
+        return render_template('fudNewsDetails.html', titles=colTitles, row_data=list(newf.values.tolist()), link_column="Link", title_col="Title", myId=id, zip=zip)
     else:
         print('Request for fudnews details page received with no id -- redirecting')
-        return redirect(url_for('html_table'))
+        return redirect(url_for('fud'))
 
 
 @app.route('/favicon.ico', methods=("POST", "GET"))

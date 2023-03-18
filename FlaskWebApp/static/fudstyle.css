@@ -1,21 +1,25 @@
+body {
+	background-color: #222222;
+}
+
 p {
 	font-family: arial, sans-serif;
 	font-size: 18px;
-	color: #000000;
+	color: #ffffff;
 }
 
 a {
 	font-family: arial, sans-serif;
 	font-size: 18px;
 	font-weight: bold;
-	color: #650436;
+	color: #afaf02;
 }
 
 h1 {
 	font-family: arial, sans-serif;
 	font-size: 30px;
 	font-weight: bold;
-	color: #361193;
+	color: #afaf99;
 }
 
 table {
@@ -29,8 +33,10 @@ th {
 	border: 1px solid #dddddd;
 	text-align: left;
 	padding: 8px;
+	background-color: #000000;
+	color: #ffffff;
 }
 
 tr:nth-child(even) {
-	background-color: #dddddd;
+	background-color: #222222;
 }
