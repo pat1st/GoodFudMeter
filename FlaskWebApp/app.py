@@ -106,14 +106,14 @@ def getJSON(language, results, topic):
     return result
 
 
-def query_items(container, language=''):
+def query_items(container, language='', items=24):
     if language == '':
         items = list(container.query_items(
-            query="SELECT top 24 c.timestamp, c.language, c.good, c.bad, c.id FROM c order by c.timestamp desc", enable_cross_partition_query=True
+            query="SELECT top " + str(items) + " c.timestamp, c.language, c.good, c.bad, c.id FROM c order by c.timestamp desc", enable_cross_partition_query=True
         ))
     else:
         items = list(container.query_items(
-            query="SELECT top 24 c.timestamp, c.language, c.good, c.bad, c.id FROM c where c.language = '" + language + "' order by c.timestamp desc", enable_cross_partition_query=True
+            query="SELECT top " + str(items) + " c.timestamp, c.language, c.good, c.bad, c.id FROM c where c.language = '" + language + "' order by c.timestamp desc", enable_cross_partition_query=True
         ))
     return items
 
@@ -167,22 +167,45 @@ def html_table():
     df['FudQ'] = ((df['bad']+df['good'])/4) * df['bad']
 
     fudqavg = df['FudQ'].mean().round(1)
-    #fudavg as degree 
+    # fudavg as degree
     fudavgdeg = (fudqavg/100)*180
-    
+
     fudavgcolor = '#00FF00'
     if fudavgdeg > 120:
         fudavgcolor = '#FF0000'
     elif fudavgdeg > 45:
         fudavgcolor = '#FFFF00'
-    
 
     df['FudQ'] = df['FudQ'].round(1)
     df['FudQ'] = df['FudQ'].astype(str)
     df['FudQ'] = df['FudQ'].str.replace('inf', '∞')
     df['FudQ'] = df['FudQ'].str.replace('nan', '∞')
 
-    return render_template('fud.html', titles=df.columns.values, row_data=list(df.values.tolist()), link_column="id", zip=zip, fudQAverage=fudqavg, langlong=languageLong, fudAverageDeg=fudavgdeg, fudColor=fudavgcolor)
+    return render_template('fud.html', titles=df.columns.values, row_data=list(df.values.tolist()), link_column="id", zip=zip, fudQAverage=fudqavg, langlong=languageLong, fudAverageDeg=fudavgdeg, fudColor=fudavgcolor, language=language)
+
+
+@app.route('/graphData.csv', methods=("POST", "GET"))
+def graphData():
+    language = request.args.get('language')
+    if not language:
+        language = 'en'
+    x = query_items(container, language, 12*7)
+
+    df = pd.DataFrame(x)
+    df['FudQ'] = ((df['bad']+df['good'])/4) * df['bad']
+    df['FudQ'] = df['FudQ'].round(1)
+    df['FudQ'] = df['FudQ'].astype(str)
+    df['FudQ'] = df['FudQ'].str.replace('inf', '∞')
+    df['FudQ'] = df['FudQ'].str.replace('nan', '∞')
+
+    # new df with date and fudq only:
+    df2 = df[['timestamp', 'FudQ']]
+    df2['timestamp'] = pd.to_datetime(df2['timestamp'])
+    df2['timestamp'] = df2['timestamp'].dt.strftime('%Y-%m-%d %H:%M:%S')
+    # sort by date
+    df2 = df2.sort_values(by=['timestamp'])
+
+    return df2.to_csv(index=False)
 
 
 @app.route('/showNewsDetails', methods=("POST", "GET"))
@@ -200,8 +223,10 @@ def fudnews():
             newf = newf.append(df[i], ignore_index=True)
 
         newf = newf.drop(['sentiment', 'publisher', 'description'], axis=1)
-        newf['sentimentText'] = newf['sentimentText'].str.replace('good', '👍 good')
-        newf['sentimentText'] = newf['sentimentText'].str.replace('bad', '👎 bad')
+        newf['sentimentText'] = newf['sentimentText'].str.replace(
+            'good', '👍 good')
+        newf['sentimentText'] = newf['sentimentText'].str.replace(
+            'bad', '👎 bad')
 
         # bring df in new order
         newf = newf[['sentimentText', 'url', 'title']]

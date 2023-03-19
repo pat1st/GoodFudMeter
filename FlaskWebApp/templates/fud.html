@@ -3,7 +3,8 @@
 
 <head>
 	<link rel="stylesheet" href="{{url_for('.static', filename='fudstyle.css')}}">
-
+	<!-- Load d3.js -->
+	<script src="https://d3js.org/d3.v4.js"></script>
 	<title>{{ fudQAverage }} - {{ langlong }} - Fud-Parade - Tesla News</title>
 	<meta http-equiv="content-Type" content="text/html; utf-8" />
 	<meta name="robots" content="INDEX,FOLLOW" />
@@ -16,27 +17,35 @@
 
 <body>
 	<h1>{{ langlong }} 48hr FudQ average: {{ fudQAverage }}</h1>
-	<p>max: 100 (i.e. very bad)</p>
+	<p class="tiny">max: 100 (i.e. very bad)</p>
 	<p>
+		<!-- Create a div where the gauge will take place -->
 		<div class="gauge"
 			style="width: 250px; --rotation:{{ fudAverageDeg }}deg; --color:{{ fudColor }}; --background:#888;">
 			<div class="percentage"></div>
 			<div class="mask"></div>
 			<span class="value">{{ fudQAverage }}</span>
 		</div>
+		<!-- Create a div where the graph will take place -->
+		
+		
+		<div id="my_dataviz" class="graph"><p class="small">History</p></div>
 	</p>
 
 	<h1>Welcome to Tesla News FudQuotient</h1>
 
-	<p>This service uses AI (Artificial Intelligence) to determine the actual MSM (Main-Stream-Media) FUD (Fear,
+	<p class="small">This service uses AI (Artificial Intelligence) to determine the actual MSM (Main-Stream-Media) FUD
+		(Fear,
 		Uncertaincy, Doubt) level for <a href="https://www.tesla.com/" target="_blank">TESLA</a>.</p>
-	<p>Tesla does not have a PR department and does not advertise, but still is very successful, due to the great
+	<p class="small">Tesla does not have a PR department and does not advertise, but still is very successful, due to
+		the
+		great
 		products and their strategy to implement their mission, to "accelerate the world's transition to sustainable
 		energy". It is widely known that a lot of FUD is spread via MSM to undermine Tesla and also manipulate the <a
 			href="https://www.google.com/finance/quote/TSLA:NASDAQ" target="_blank">$TSLA</a> Stock price. </p>
-	<p>We look up the top 'Tesla' News articles in Google News and use Google AI to see if the article's
+	<p class="small">We look up the top 'Tesla' News articles in Google News and use Google AI to see if the article's
 		title is sentimented as good or bad. Then we sums it up and list it for your reference.</p>
-	<p>Today we offer this service in 5 languages: <a href="?language=en">English</a>, <a
+	<p class="small">Today we offer this service in 5 languages: <a href="?language=en">English</a>, <a
 			href="?language=de">German</a>, <a href="?language=fr">French</a>, <a href="?language=es">Spanish</a> and <a
 			href="?language=zh">Chinese</a>,
 		with Chinese being in
@@ -103,7 +112,76 @@
 	<p></p>
 	<p>our <a href="privacy.html" target="_blank">privacy policy</a></p>
 </body>
+<script>
+	// set the dimensions and margins of the graph
+	var margin = {
+			top: 5,
+			right: 10,
+			bottom: 15,
+			left: 10
+		},
+		width = 550 - margin.left - margin.right,
+		height = 200 - margin.top - margin.bottom;
 
+	// append the svg object to the body of the page
+	var svg = d3.select("#my_dataviz")
+		.append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform",
+			"translate(" + margin.left + "," + margin.top + ")");
+
+	//Read the data
+	d3.csv("graphData.csv?language={{ language }}",
+
+		// When reading the csv, I must format variables:
+		function (d) {
+			return {
+				date: d3.timeParse("%Y-%m-%d %H:%M:%S")(d.timestamp),
+				value: d.FudQ
+			}
+		},
+
+		// Now I can use this dataset:
+		function (data) {
+
+			// Add X axis --> it is a date format
+			var x = d3.scaleTime()
+				.domain(d3.extent(data, function (d) {
+					return d.date;
+				}))
+				.range([0, width]);
+			svg.append("g")
+				.attr("transform", "translate(0," + height + ")")
+				.call(d3.axisBottom(x));
+
+			// Add Y axis
+			var y = d3.scaleLinear()
+				.domain([0, d3.max(data, function (d) {
+					return +d.value;
+				})])
+				.range([height, 0]);
+			svg.append("g")
+				.call(d3.axisLeft(y));
+
+			// Add the line
+			svg.append("path")
+				.datum(data)
+				.attr("fill", "none")
+				.attr("stroke", "yellowgreen")
+				.attr("stroke-width", 3.5)
+				.attr("d", d3.line()
+					.x(function (d) {
+						return x(d.date)
+					})
+					.y(function (d) {
+						return y(d.value)
+					})
+				)
+
+		})
+</script>
 
 
 </html>
