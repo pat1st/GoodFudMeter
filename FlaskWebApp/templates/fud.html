@@ -13,9 +13,17 @@
 	<meta name="keywords" content="Tesla $TSLA TSLA analysis" />
 	<meta name="author" content="@pat1st" />
 	<meta name="revisit-after" content="2 days" />
+
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2687895404343958"
+		crossorigin="anonymous"></script>
 </head>
 
 <body>
+	<span id="languageButtons"><a class="button" href="?language=en">English</a> &nbsp; &nbsp; <a class="button"
+			href="?language=de">German</a>
+		&nbsp; &nbsp; <a class="button" href="?language=fr">French</a> &nbsp; &nbsp; <a class="button"
+			href="?language=es">Spanish</a> &nbsp;
+		&nbsp;<a class="button" href="?language=zh">Chinese</a></span>
 	<h1>{{ langlong }} 48hr FudQ average: {{ fudQAverage }}</h1>
 	<p class="tiny">max: 100 (i.e. very bad)</p>
 	<p>
@@ -27,24 +35,26 @@
 			<span class="value">{{ fudQAverage }}</span>
 		</div>
 		<!-- Create a div where the graph will take place -->
-		
-		
-		<div id="my_dataviz" class="graph"><p class="small">History</p></div>
+
+
+		<div id="my_dataviz" class="graph">
+			<p class="small">History</p>
+		</div>
 	</p>
 
-	<h1>Welcome to Tesla News FudQuotient</h1>
+	<h1>Welcome to Tesla News Fud-Parade</h1>
 
-	<p class="small">This service uses AI (Artificial Intelligence) to determine the actual MSM (Main-Stream-Media) FUD
-		(Fear,
-		Uncertaincy, Doubt) level for <a href="https://www.tesla.com/" target="_blank">TESLA</a>.</p>
+	<p class="small">This service is for Tesla analysts and other people who are interested in Tesla and how it is being / made to be
+		perceived in public at the very moment. For this we make use of AI (Artificial Intelligence) to determine the
+		actual MSM (Main-Stream-Media) FUD
+		(Fear, Uncertaincy, Doubt) level for <a href="https://www.tesla.com/" target="_blank">TESLA</a>.</p>
 	<p class="small">Tesla does not have a PR department and does not advertise, but still is very successful, due to
-		the
-		great
-		products and their strategy to implement their mission, to "accelerate the world's transition to sustainable
+		the great products and their strategy to implement their mission, to "accelerate the world's transition to
+		sustainable
 		energy". It is widely known that a lot of FUD is spread via MSM to undermine Tesla and also manipulate the <a
 			href="https://www.google.com/finance/quote/TSLA:NASDAQ" target="_blank">$TSLA</a> Stock price. </p>
 	<p class="small">We look up the top 'Tesla' News articles in Google News and use Google AI to see if the article's
-		title is sentimented as good or bad. Then we sums it up and list it for your reference.</p>
+		title is sentimented as good or bad. Then we sum it up and list it for your reference.</p>
 	<p class="small">Today we offer this service in 5 languages: <a href="?language=en">English</a>, <a
 			href="?language=de">German</a>, <a href="?language=fr">French</a>, <a href="?language=es">Spanish</a> and <a
 			href="?language=zh">Chinese</a>,
@@ -169,7 +179,7 @@
 			svg.append("path")
 				.datum(data)
 				.attr("fill", "none")
-				.attr("stroke", "yellowgreen")
+				.attr("stroke", "#9ACD32")
 				.attr("stroke-width", 3.5)
 				.attr("d", d3.line()
 					.x(function (d) {
@@ -181,6 +191,16 @@
 				)
 
 		})
+</script>
+<script>
+	// highlite the current language in the span buttons
+	var language = "{{ langlong }}";
+	var languageButtons = document.getElementById("languageButtons").getElementsByClassName("button");
+	for (var i = 0; i < languageButtons.length; i++) {
+		if (languageButtons[i].innerHTML == language) {
+			languageButtons[i].style = "border-color: #ff4444;";
+		}
+	}
 </script>
 
 

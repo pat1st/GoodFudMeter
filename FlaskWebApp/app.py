@@ -189,7 +189,7 @@ def graphData():
     language = request.args.get('language')
     if not language:
         language = 'en'
-    x = query_items(container, language, 12*7)
+    x = query_items(container, language, 4*12*7)
 
     df = pd.DataFrame(x)
     df['FudQ'] = ((df['bad']+df['good'])/4) * df['bad']
